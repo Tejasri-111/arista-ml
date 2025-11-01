@@ -38,7 +38,7 @@ def generate_interference_frame():
     # Add mixed signals (simulate real-world coexistence)
     grid = add_wifi_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 3), positions_log=positions_log)
     grid = add_zigbee_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 5), positions_log=positions_log)
-    grid = add_bluetooth_clients(noise_grid,grid, x, y, n_clients=random.randint(5, 15), positions_log=positions_log)
+    grid = add_bluetooth_clients(noise_grid,grid, x, y, n_clients=random.randint(2, 10), positions_log=positions_log)
     grid = add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 3), positions_log=positions_log)
 
     grid -= grid.min()
@@ -62,7 +62,7 @@ def generate_interference_frame():
             "confidence": round(random.uniform(0.85, 0.99), 2),  # classifier confidence
             "center_freq": round(np.interp(cy, [0, len(y)], [2400, 2483.5]), 2),
             "bandwidth_px": entry.get("bandwidth_px", 1),
-            "horizontal_width":entry.get("horizontal_width",None)
+            "horizontal_width":entry.get("horizontal_width",None),
             "amplitude": entry.get("amplitude", None),
             "duty_cycle": entry.get("duty_cycle", None),
             "noise_floor": entry.get("noise_floor", None),

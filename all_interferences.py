@@ -9,7 +9,7 @@ def generate_gaussian_noise_grid(x, y, mean=0, variance=1):
 
 
 # ==================== WIFI ====================
-def add_wifi_clients(noise_grid, grid, x, y, n_clients=3, width=10, x_gap=10,
+def add_wifi_clients(noise_grid, grid, x, y, n_clients=3, width=10, x_gap=5,
                      amp_mean=180, amp_var=25, positions_log=None):
     """
     Add multiple Wi-Fi-like signals spaced across the y-axis (frequency),
