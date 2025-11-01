@@ -17,6 +17,17 @@ from all_interferences import *
 # STEP 1: Generate Synthetic Multi-Signal Interference Frame
 # ===================================================
 
+def plot_noise_grid(x, y, grid, title):
+    plt.figure(figsize=(8, 4))
+    plt.imshow(grid, extent=[x.min(), x.max(), y.min(), y.max()],
+               origin='lower', cmap='viridis', aspect='auto', vmin=0, vmax=255)
+    plt.colorbar(label='Power Intensity (0–255)')
+    plt.title(title)
+    plt.xlabel('X-axis (0–100)')
+    plt.ylabel('Y-axis (0–20)')
+    plt.show()
+
+
 def generate_interference_frame():
     x = np.arange(0, 101, 1)
     y = np.arange(0, 21, 1)
@@ -35,8 +46,8 @@ def generate_interference_frame():
     grid = np.clip(grid, 0, 255)
 
     # Save visualization
-    os.makedirs("captures", exist_ok=True)
-    img_path = f"captures/interference_{datetime.now().strftime('%H%M%S')}.png"
+    os.makedirs("results", exist_ok=True)
+    img_path = f"results/interference_{datetime.now().strftime('%H%M%S')}.png"
     Image.fromarray(grid.astype(np.uint8)).save(img_path)
 
     # Assign metadata per detected signal
@@ -51,6 +62,7 @@ def generate_interference_frame():
             "confidence": round(random.uniform(0.85, 0.99), 2),  # classifier confidence
             "center_freq": round(np.interp(cy, [0, len(y)], [2400, 2483.5]), 2),
             "bandwidth_px": entry.get("bandwidth_px", 1),
+            "horizontal_width":entry.get("horizontal_width",None)
             "amplitude": entry.get("amplitude", None),
             "duty_cycle": entry.get("duty_cycle", None),
             "noise_floor": entry.get("noise_floor", None),
@@ -104,11 +116,16 @@ def main():
     # File paths
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     json_out_path = f"results/interference_report_{timestamp}.json"
+
     image_out_path = f"results/interference_image_{timestamp}.png"
 
 
     img = Image.open(image_path)
     img.save(image_out_path)
+
+
+
+
 
     # Save JSON report
     with open(json_out_path, "w") as f:
@@ -116,6 +133,7 @@ def main():
 
     print(f"Saved report to {json_out_path}")
     print(f"Saved image to {image_out_path}")
+
     print(json.dumps(frame_info, indent=4))
     
 if __name__ == "__main__":
