@@ -2,14 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def generate_gaussian_noise_grid(x, y, mean=0, variance=1):
+def generate_gaussian_noise_grid(x, y, mean=50, variance=10):
     grid = np.zeros((len(y), len(x)))
     noise = np.random.normal(mean, np.sqrt(variance), grid.shape)
     return grid + noise
 
 
 # ==================== WIFI ====================
-def add_wifi_clients(noise_grid, grid, x, y, n_clients=3, width=10, x_gap=5,
+def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=10
+, x_gap=5,
                      amp_mean=180, amp_var=25, positions_log=None):
     """
     Add multiple Wi-Fi-like signals spaced across the y-axis (frequency),
@@ -45,18 +46,17 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=3, width=10, x_gap=5,
                 grid[y_start:y_end, xi] += amp * sinc_profile[y_start:y_end]
             x_start += width + x_gap
 
-        # --- Log the generated client ---
-        if positions_log is not None:
-            positions_log.append({
-                "type": "Wi-Fi",
-                "center_x": int(nx // 2),
-                "center_y": int(fc),
-                "bandwidth_px": y_end - y_start,
-                "horizontal_width" : width,
-                "amplitude": float(amp),
-                "duty_cycle": 1.0,
-                "noise_floor": float(np.mean(noise_grid)),
-            })
+        # --- Log the generated client ---      
+        positions_log.append({
+            "type": "Wi-Fi",
+            "center_x": int(nx // 2),
+            "center_y": int(fc),
+            "bandwidth_px": y_end - y_start,
+            "horizontal_width" : width,
+            "amplitude": float(amp),
+            "duty_cycle": 1.0,
+            "noise_floor": float(np.mean(noise_grid)),
+        })
 
     return grid
 
@@ -77,24 +77,24 @@ def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=3, amp_mean=2, 
         yy = np.arange(ny)
         gauss_profile = np.exp(-0.5 * ((yy - fc) / sigma_y)**2)
         gauss_profile /= gauss_profile.max()
-        y_start, y_end = max(int(fc - 1), 0), min(int(fc + 1), ny)
+        y_start, y_end = max(int(fc - 25.6), 0), min(int(fc + 25.6), ny)
 
         for xi in range(x_start, x_end):
             if bursty and (np.random.rand() > duty_cycle):
                 continue
             grid[y_start:y_end, xi] += amp * gauss_profile[y_start:y_end]
 
-        if positions_log is not None:
-            positions_log.append({
-                "type": "Zigbee",
-                "center_x": int(x_center),
-                "center_y": int(fc),
-                "bandwidth_px": y_end- y_start,
-                "horizontal_width": width,
-                "amplitude": float(amp),
-                "duty_cycle":duty_cycle if bursty else 1,
-                "noise_floor": np.mean(noise_grid),
-            })
+
+        positions_log.append({
+            "type": "Zigbee",
+            "center_x": int(x_center),
+            "center_y": int(fc),
+            "bandwidth_px": y_end- y_start,
+            "horizontal_width": width,
+            "amplitude": float(amp),
+            "duty_cycle":duty_cycle if bursty else 1,
+            "noise_floor": np.mean(noise_grid),
+        })
 
     return grid
 
@@ -117,24 +117,23 @@ def add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=2, width=6, gap=
         yy = np.arange(ny)
         gauss_profile = np.exp(-0.5 * ((yy - fc) / sigma_y)**2)
         gauss_profile /= gauss_profile.max()
-        y_start, y_end = max(int(fc - 2), 0), min(int(fc + 2) + 1, ny)
+        y_start, y_end = max(int(fc - 25.6), 0), min(int(fc + 25.6) + 1, ny)
 
         for xi in range(x_start, x_end):
             if bursty and (np.random.rand() > duty_cycle):
                 continue
             grid[y_start:y_end, xi] += amp * gauss_profile[y_start:y_end]
 
-        if positions_log is not None:
-            positions_log.append({
-                "type": "Cordless-phone",
-                "center_x": int(x_center),
-                "center_y": int(fc),
-                "bandwidth_px": y_end- y_start,
-                "horizontal_width": width,
-                "amplitude": float(amp),
-                "duty_cycle": duty_cycle if bursty else 1,
-                "noise_floor": np.mean(noise_grid),
-            })
+        positions_log.append({
+            "type": "Cordless-phone",
+            "center_x": int(x_center),
+            "center_y": int(fc),
+            "bandwidth_px": y_end- y_start,
+            "horizontal_width": width,
+            "amplitude": float(amp),
+            "duty_cycle": duty_cycle if bursty else 1,
+            "noise_floor": np.mean(noise_grid),
+        })
 
     return grid
 
@@ -151,7 +150,7 @@ def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=1, height_s
         y_center = np.random.randint(0, ny)
         x_start = max(x_center - width // 2, 0)
         x_end = min(x_center + width // 2 + 1, nx)
-        y_start, y_end = max(int(fc - 1), 0), min(int(fc + 1) + 1, ny)
+        y_start, y_end = max(int(y_center -12.8 ), 0), min(int( y_center+ 12.8) + 1, ny)
 
         yy = np.arange(ny)
         gauss_profile = np.exp(-0.5 * ((yy - y_center) / height_sigma)**2)
@@ -161,19 +160,18 @@ def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=1, height_s
             continue
 
         for xi in range(x_start, x_end):
-            grid[y_start:y_end, xi] += amp * gauss_profile
+            grid[y_start:y_end, xi] += amp * gauss_profile[y_start:y_end]
 
-        if positions_log is not None:
-            positions_log.append({
-                "type": "Cordless-phone",
-                "center_x": int(x_center),
-                "center_y": int(y_center),
-                "bandwidth_px": y_end - y_start,
-                "horizontal_width": width,
-                "amplitude": float(amp),
-                "duty_cycle": duty_cycle ,
-                "noise_floor": np.mean(noise_grid),
-            })
+        positions_log.append({
+            "type": "Bluetooth",
+            "center_x": int(x_center),
+            "center_y": int(y_center),
+            "bandwidth_px": y_end - y_start,
+            "horizontal_width": width,
+            "amplitude": float(amp),
+            "duty_cycle": duty_cycle ,
+            "noise_floor": np.mean(noise_grid),
+        })
     return grid
 
 
@@ -242,9 +240,5 @@ def main():
 
     plot_noise_grid(x, y, grid,
                     f"Bluetooth + Cordless + Zigbee + Wi-Fi + Noise")
-
-  
-
-
 if __name__ == "__main__":
     main()

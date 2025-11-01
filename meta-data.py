@@ -17,7 +17,7 @@ from all_interferences import *
 # STEP 1: Generate Synthetic Multi-Signal Interference Frame
 # ===================================================
 
-def plot_noise_grid(x, y, grid, title):
+def plot_noise_grid(x, y, grid, title, save_path=None):
     plt.figure(figsize=(8, 4))
     plt.imshow(grid, extent=[x.min(), x.max(), y.min(), y.max()],
                origin='lower', cmap='viridis', aspect='auto', vmin=0, vmax=255)
@@ -25,20 +25,27 @@ def plot_noise_grid(x, y, grid, title):
     plt.title(title)
     plt.xlabel('X-axis (0–100)')
     plt.ylabel('Y-axis (0–20)')
-    plt.show()
 
+    # Save if path is given
+    if save_path is not None:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        plt.savefig(save_path, bbox_inches='tight', dpi=300)
+        print(f"Saved plot to {save_path}")
 
-def generate_interference_frame():
-    x = np.arange(0, 101, 1)
-    y = np.arange(0, 21, 1)
+    plt.close()  # prevents GUI popups in scripts
+
+    
+
+def generate_interference_frame(x,y):
+
     noise_grid = generate_gaussian_noise_grid(x, y, mean=10, variance=2)
     grid = noise_grid.copy()
     positions_log = []
 
     # Add mixed signals (simulate real-world coexistence)
-    grid = add_wifi_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 3), positions_log=positions_log)
+    grid = add_wifi_clients(noise_grid,grid, x, y, n_clients=random.randint(1,4), positions_log=positions_log)
     grid = add_zigbee_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 5), positions_log=positions_log)
-    grid = add_bluetooth_clients(noise_grid,grid, x, y, n_clients=random.randint(2, 10), positions_log=positions_log)
+    grid = add_bluetooth_clients(noise_grid,grid, x, y, n_clients=random.randint(3, 10), positions_log=positions_log)
     grid = add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 3), positions_log=positions_log)
 
     grid -= grid.min()
@@ -47,9 +54,7 @@ def generate_interference_frame():
 
     # Save visualization
     os.makedirs("results", exist_ok=True)
-    img_path = f"results/interference_{datetime.now().strftime('%H%M%S')}.png"
-    Image.fromarray(grid.astype(np.uint8)).save(img_path)
-
+    img_path = f"results/interference.png"
     # Assign metadata per detected signal
     events = []
     for entry in positions_log:
@@ -65,8 +70,7 @@ def generate_interference_frame():
             "horizontal_width":entry.get("horizontal_width",None),
             "amplitude": entry.get("amplitude", None),
             "duty_cycle": entry.get("duty_cycle", None),
-            "noise_floor": entry.get("noise_floor", None),
-            "airtime_cost": round(random.uniform(0.01, 0.8), 3),
+            "noise_floor": entry.get("noise_floor", None),    
         }
         events.append(event)
 
@@ -74,11 +78,12 @@ def generate_interference_frame():
         "timestamp": datetime.now().isoformat(),
         "channel": random.choice([1, 6, 11]),
         "band": "2.4GHz",
+        "airtime_cost": round(random.uniform(0.01, 0.8), 3),
         "events": events
     }
 
     print(f"Generated frame with {len(events)} signals")
-    return img_path, frame_info
+    return img_path, frame_info, grid
 
 
 # ===================================================
@@ -105,7 +110,9 @@ class DummyInterferenceClassifier:
 # ===================================================
 
 def main():
-    image_path, frame_info = generate_interference_frame()
+    x = np.arange(0, 240, 1)
+    y = np.arange(0, 256, 1)
+    image_path, frame_info, grid = generate_interference_frame(x,y)
 
     # Use CNN classifier (dummy demo)
     classifier = DummyInterferenceClassifier()
@@ -115,16 +122,13 @@ def main():
     os.makedirs("results", exist_ok=True)
     # File paths
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    json_out_path = f"results/interference_report_{timestamp}.json"
-
-    image_out_path = f"results/interference_image_{timestamp}.png"
-
-
-    img = Image.open(image_path)
-    img.save(image_out_path)
+    json_out_path = f"results/interference_report.json"
+    image_out_path = f"results/interference.png"
+    plot_noise_grid(x,y,grid,"interference",image_path)
 
 
-
+    #img = Image.open(image_path)
+    #img.save(image_out_path)
 
 
     # Save JSON report
