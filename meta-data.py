@@ -101,13 +101,22 @@ def main():
 
     # Save structured JSON
     os.makedirs("results", exist_ok=True)
-    out_path = f"results/interference_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-    with open(out_path, "w") as f:
+    # File paths
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    json_out_path = f"results/interference_report_{timestamp}.json"
+    image_out_path = f"results/interference_image_{timestamp}.png"
+
+
+    img = Image.open(image_path)
+    img.save(image_out_path)
+
+    # Save JSON report
+    with open(json_out_path, "w") as f:
         json.dump(frame_info, f, indent=4)
 
-    print(f"Saved report to {out_path}")
+    print(f"Saved report to {json_out_path}")
+    print(f"Saved image to {image_out_path}")
     print(json.dumps(frame_info, indent=4))
-
-
+    
 if __name__ == "__main__":
     main()

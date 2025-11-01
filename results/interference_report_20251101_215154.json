@@ -1,0 +1,117 @@
+{
+    "timestamp": "2025-11-01T21:51:54.000793",
+    "channel": 6,
+    "band": "2.4GHz",
+    "events": [
+        {
+            "type": "Wi-Fi",
+            "confidence": 0.96,
+            "center_freq": 2419.88,
+            "bandwidth_px": 9,
+            "amplitude": 182.84693319658416,
+            "duty_cycle": 1.0,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.443
+        },
+        {
+            "type": "Wi-Fi",
+            "confidence": 0.99,
+            "center_freq": 2459.64,
+            "bandwidth_px": 9,
+            "amplitude": 185.4967764874916,
+            "duty_cycle": 1.0,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.44
+        },
+        {
+            "type": "Zigbee",
+            "confidence": 0.83,
+            "center_freq": 2447.71,
+            "bandwidth_px": 3,
+            "amplitude": 1.2656375291389192,
+            "duty_cycle": 1,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.083
+        },
+        {
+            "type": "Zigbee",
+            "confidence": 0.94,
+            "center_freq": 2431.81,
+            "bandwidth_px": 3,
+            "amplitude": 2.3669561800663104,
+            "duty_cycle": 1,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.462
+        },
+        {
+            "type": "Zigbee",
+            "confidence": 0.94,
+            "center_freq": 2447.71,
+            "bandwidth_px": 3,
+            "amplitude": 0.9345655469196048,
+            "duty_cycle": 1,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.102
+        },
+        {
+            "type": "Zigbee",
+            "confidence": 0.96,
+            "center_freq": 2459.64,
+            "bandwidth_px": 3,
+            "amplitude": 1.0304624261511957,
+            "duty_cycle": 1,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.465
+        },
+        {
+            "type": "Cordless-phone",
+            "confidence": 0.92,
+            "center_freq": 2411.93,
+            "bandwidth_px": 1,
+            "amplitude": 60.13206030310135,
+            "duty_cycle": 0.3,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.197
+        },
+        {
+            "type": "Cordless-phone",
+            "confidence": 0.89,
+            "center_freq": 2435.79,
+            "bandwidth_px": 1,
+            "amplitude": 64.86327984127811,
+            "duty_cycle": 0.3,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.229
+        },
+        {
+            "type": "Cordless-phone",
+            "confidence": 0.83,
+            "center_freq": 2431.81,
+            "bandwidth_px": 1,
+            "amplitude": 60.886007890157266,
+            "duty_cycle": 0.3,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.233
+        },
+        {
+            "type": "Cordless-phone",
+            "confidence": 0.84,
+            "center_freq": 2467.6,
+            "bandwidth_px": 6,
+            "amplitude": 1.8424079307845782,
+            "duty_cycle": 1,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.532
+        },
+        {
+            "type": "Cordless-phone",
+            "confidence": 0.99,
+            "center_freq": 2463.62,
+            "bandwidth_px": 6,
+            "amplitude": 3.8980232923489764,
+            "duty_cycle": 1,
+            "noise_floor": 9.983483245675616,
+            "airtime_cost": 0.579
+        }
+    ]
+}
