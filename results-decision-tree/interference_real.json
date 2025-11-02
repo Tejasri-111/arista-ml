@@ -1,0 +1,54 @@
+{
+    "timestamp": "2025-11-02T18:14:28.912294",
+    "channel": 1,
+    "band": "2.4GHz",
+    "airtime_cost": 0.609,
+    "noise_floor": 10.017046789634426,
+    "events": [
+        {
+            "type": "Wi-Fi",
+            "confidence": 0.95,
+            "center_freq": 2441.75,
+            "bandwidth_px": 232,
+            "horizontal_width": 30,
+            "amplitude": 201.0420897963616,
+            "duty_cycle": 1.0
+        },
+        {
+            "type": "Zigbee",
+            "confidence": 0.95,
+            "center_freq": 2419.57,
+            "bandwidth_px": 51,
+            "horizontal_width": 8,
+            "amplitude": 75.31838065064196,
+            "duty_cycle": 1
+        },
+        {
+            "type": "Bluetooth",
+            "confidence": 0.91,
+            "center_freq": 2465.56,
+            "bandwidth_px": 11,
+            "horizontal_width": 50,
+            "amplitude": 67.1306422790132,
+            "duty_cycle": 1
+        },
+        {
+            "type": "Bluetooth",
+            "confidence": 0.91,
+            "center_freq": 2479.26,
+            "bandwidth_px": 11,
+            "horizontal_width": 50,
+            "amplitude": 70.19721292754404,
+            "duty_cycle": 1
+        },
+        {
+            "type": "Cordless-phone",
+            "confidence": 0.89,
+            "center_freq": 2426.42,
+            "bandwidth_px": 52,
+            "horizontal_width": 15,
+            "amplitude": 105.34548776892724,
+            "duty_cycle": 1
+        }
+    ]
+}
