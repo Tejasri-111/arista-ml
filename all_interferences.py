@@ -2,16 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def generate_gaussian_noise_grid(x, y, mean=50, variance=10):
+def generate_gaussian_noise_grid(x, y, mean=30, variance=10):
     grid = np.zeros((len(y), len(x)))
     noise = np.random.normal(mean, np.sqrt(variance), grid.shape)
     return grid + noise
 
 
 # ==================== WIFI ====================
-def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=10
-, x_gap=5,
-                     amp_mean=180, amp_var=25, positions_log=None):
+def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=30
+, x_gap=12,
+                     amp_mean=200, amp_var=5, positions_log=None):
     """
     Add multiple Wi-Fi-like signals spaced across the y-axis (frequency),
     each occupying a distinct vertical band with controlled gaps.
@@ -20,21 +20,22 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=10
     nx, ny = len(x), len(y)
 
     # --- Compute vertical spacing parameters ---
-    gap = max(1, int(0.05 * ny))  # 5% of height as gap
+    gap = max(1, int(0.05* ny))  # 5% of height as gap
     usable_height = ny - (n_clients + 1) * gap
     if usable_height <= 0:
         raise ValueError("Too many Wi-Fi clients for given Y range")
 
-    bw_per_client = max(3, usable_height // n_clients)
+    bw_per_client = max(3, int(usable_height /n_clients))
+    print(f"client width: {bw_per_client}")
 
     # --- Generate clients ---
     for i in range(n_clients):
         y_start = gap + i * (bw_per_client + gap)
         y_end = min(y_start + bw_per_client, ny)
         fc = int((y_start + y_end) / 2)  # center frequency index
-
+        #print(y_start, fc, y_end)
         yy = np.arange(ny)
-        sinc_profile = np.sinc((yy - fc) / 5)**2
+        sinc_profile = np.sinc((yy - fc) /10)**2
         sinc_profile /= sinc_profile.max()
 
         # --- Horizontal duplication across x-axis ---
@@ -44,6 +45,7 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=10
             amp = np.random.normal(amp_mean, np.sqrt(amp_var))
             for xi in range(x_start, x_end):
                 grid[y_start:y_end, xi] += amp * sinc_profile[y_start:y_end]
+                print(grid[y_start:y_end,xi])
             x_start += width + x_gap
 
         # --- Log the generated client ---      
@@ -62,8 +64,8 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=10
 
 
 # ==================== ZIGBEE ====================
-def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=3, amp_mean=2, amp_var=0.5,
-                       sigma_y=1.5, bursty=False, duty_cycle=0.2, positions_log=None):
+def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=8, amp_mean=80, amp_var=10,
+                       sigma_y=10, bursty=False, duty_cycle=0.0, positions_log=None):
     grid = grid.copy().astype(float)
     nx, ny = len(x), len(y)
 
@@ -100,9 +102,9 @@ def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=3, amp_mean=2, 
 
 
 # ==================== CORDLESS PHONE ====================
-def add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=2, width=6, gap=8,
-                               amp_mean=3.0, amp_var=0.5, sigma_y=2.5,
-                               bursty=False, duty_cycle=0.2, positions_log=None):
+def add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=2, width=15, gap=8,
+                               amp_mean=110, amp_var=20, sigma_y=10,
+                               bursty=False, duty_cycle=0.0, positions_log=None):
 
     grid = grid.copy().astype(float)
     nx, ny = len(x), len(y)
@@ -139,8 +141,8 @@ def add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=2, width=6, gap=
 
 
 # ==================== BLUETOOTH ====================
-def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=1, height_sigma=0.8,
-                          amp_mean=60, amp_var=10, duty_cycle=0.3, positions_log=None):
+def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=50, height_sigma= 10,
+                          amp_mean=70, amp_var=10, duty_cycle=1, positions_log=None):
     grid = grid.copy().astype(float)
     nx, ny = len(x), len(y)
 
@@ -150,7 +152,7 @@ def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=1, height_s
         y_center = np.random.randint(0, ny)
         x_start = max(x_center - width // 2, 0)
         x_end = min(x_center + width // 2 + 1, nx)
-        y_start, y_end = max(int(y_center -12.8 ), 0), min(int( y_center+ 12.8) + 1, ny)
+        y_start, y_end = max(int(y_center -5), 0), min(int( y_center+ 5) + 1, ny)
 
         yy = np.arange(ny)
         gauss_profile = np.exp(-0.5 * ((yy - y_center) / height_sigma)**2)
@@ -177,20 +179,20 @@ def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=1, height_s
 
 # ==================== PLOTTER ====================
 def plot_noise_grid(x, y, grid, title):
-    plt.figure(figsize=(8, 4))
-    plt.imshow(grid, extent=[x.min(), x.max(), y.min(), y.max()],
+    plt.figure(figsize=(6, 6))
+    plt.imshow(grid,
                origin='lower', cmap='viridis', aspect='auto', vmin=0, vmax=255)
     plt.colorbar(label='Power Intensity (0–255)')
     plt.title(title)
-    plt.xlabel('X-axis (0–100)')
-    plt.ylabel('Y-axis (0–20)')
+    plt.xlabel('X-axis ')
+    plt.ylabel('Y-axis ')
     plt.show()
 
 
 # ==================== MAIN ====================
 def main():
-    y = np.arange(0, 21, 1)
-    x = np.arange(0, 101, 1)
+    y = np.arange(0, 256, 1)
+    x = np.arange(0, 240, 1)
 
     mean, variance = 10, 2
     noise_grid = generate_gaussian_noise_grid(x, y, mean, variance).astype(float)
@@ -199,11 +201,15 @@ def main():
     positions_log = []
 
     # --- Wi-Fi ---
+    print(len(y))
     n_wifi_clients = int(input("Enter number of Wi-Fi clients: "))
     wifi_grid = add_wifi_clients(noise_grid,noise_grid, x, y,
-                                 n_clients=n_wifi_clients, width=10, x_gap=10,
-                                 amp_mean=180, amp_var=25,
+                                 n_clients=n_wifi_clients, width=30, x_gap=10,
+                                 amp_mean=200, amp_var=5,
                                  positions_log=positions_log)
+
+    plot_noise_grid(x, y, wifi_grid,
+                    f"Bluetooth + Cordless + Zigbee + Wi-Fi + Noise")
 
     # --- Zigbee ---
     n_zigbee = int(input("Enter number of Zigbee clients: "))

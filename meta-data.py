@@ -18,35 +18,32 @@ from all_interferences import *
 # ===================================================
 
 def plot_noise_grid(x, y, grid, title, save_path=None):
-    plt.figure(figsize=(8, 4))
-    plt.imshow(grid, extent=[x.min(), x.max(), y.min(), y.max()],
-               origin='lower', cmap='viridis', aspect='auto', vmin=0, vmax=255)
-    plt.colorbar(label='Power Intensity (0–255)')
+    plt.figure(figsize=(8, 4))  # rectangular figure helps visualize frequencies
+    plt.imshow(grid, origin='lower', cmap='viridis', aspect='auto', vmin=0, vmax=255)
     plt.title(title)
-    plt.xlabel('X-axis (0–100)')
-    plt.ylabel('Y-axis (0–20)')
-
-    # Save if path is given
-    if save_path is not None:
+    plt.xlabel("Time / X-axis")
+    plt.ylabel("Frequency bins / Y-axis")
+    plt.colorbar(label='Power Intensity (0–255)')
+    if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         plt.savefig(save_path, bbox_inches='tight', dpi=300)
         print(f"Saved plot to {save_path}")
+    plt.close()
 
-    plt.close()  # prevents GUI popups in scripts
 
     
 
 def generate_interference_frame(x,y):
 
-    noise_grid = generate_gaussian_noise_grid(x, y, mean=10, variance=2)
+    noise_grid = generate_gaussian_noise_grid(x, y, mean=30, variance=5)
     grid = noise_grid.copy()
     positions_log = []
 
     # Add mixed signals (simulate real-world coexistence)
-    grid = add_wifi_clients(noise_grid,grid, x, y, n_clients=random.randint(1,4), positions_log=positions_log)
-    grid = add_zigbee_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 5), positions_log=positions_log)
-    grid = add_bluetooth_clients(noise_grid,grid, x, y, n_clients=random.randint(3, 10), positions_log=positions_log)
-    grid = add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 3), positions_log=positions_log)
+    grid = add_wifi_clients(noise_grid,grid, x, y, n_clients=random.randint(1,3), positions_log=positions_log)
+    grid = add_zigbee_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 2), positions_log=positions_log)
+    grid = add_bluetooth_clients(noise_grid,grid, x, y, n_clients=random.randint(2,5), positions_log=positions_log)
+    grid = add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=random.randint(1, 2), positions_log=positions_log)
 
     grid -= grid.min()
     grid = (grid / grid.max()) * 255
@@ -113,7 +110,10 @@ def main():
     x = np.arange(0, 240, 1)
     y = np.arange(0, 256, 1)
     image_path, frame_info, grid = generate_interference_frame(x,y)
+    print(grid)
 
+    image_out_path = f"results/interference.png"
+    plot_noise_grid(x,y,grid,"interference",image_path)
     # Use CNN classifier (dummy demo)
     classifier = DummyInterferenceClassifier()
     frame_info["events"] = classifier.predict(image_path, frame_info["events"])
@@ -123,8 +123,7 @@ def main():
     # File paths
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     json_out_path = f"results/interference_report.json"
-    image_out_path = f"results/interference.png"
-    plot_noise_grid(x,y,grid,"interference",image_path)
+
 
 
     #img = Image.open(image_path)

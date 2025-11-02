@@ -1,158 +1,78 @@
 {
-    "timestamp": "2025-11-01T18:16:15.925204",
+    "timestamp": "2025-11-02T16:03:20.619427",
     "channel": 6,
     "band": "2.4GHz",
-    "airtime_cost": 0.561,
+    "airtime_cost": 0.243,
     "events": [
         {
             "type": "Wi-Fi",
-            "confidence": 0.89,
-            "center_freq": 2419.88,
-            "bandwidth_px": 9,
-            "horizontal_width": 10,
-            "amplitude": 178.76417296804527,
+            "confidence": 0.96,
+            "center_freq": 2421.85,
+            "bandwidth_px": 110,
+            "horizontal_width": 30,
+            "amplitude": 179.39405364737033,
             "duty_cycle": 1.0,
-            "noise_floor": 10.03048214838829
+            "noise_floor": 29.999678348068407
         },
         {
             "type": "Wi-Fi",
-            "confidence": 0.98,
-            "center_freq": 2459.64,
-            "bandwidth_px": 9,
-            "horizontal_width": 10,
-            "amplitude": 167.32468058281015,
+            "confidence": 0.89,
+            "center_freq": 2461.65,
+            "bandwidth_px": 110,
+            "horizontal_width": 30,
+            "amplitude": 183.62410697407182,
             "duty_cycle": 1.0,
-            "noise_floor": 10.03048214838829
+            "noise_floor": 29.999678348068407
         },
         {
             "type": "Zigbee",
-            "confidence": 0.94,
-            "center_freq": 2435.79,
-            "bandwidth_px": 2,
-            "horizontal_width": 3,
-            "amplitude": 0.22882200434093125,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Zigbee",
-            "confidence": 1.0,
-            "center_freq": 2455.67,
-            "bandwidth_px": 2,
-            "horizontal_width": 3,
-            "amplitude": 0.48895947990114297,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Zigbee",
-            "confidence": 0.89,
-            "center_freq": 2455.67,
-            "bandwidth_px": 2,
-            "horizontal_width": 3,
-            "amplitude": 1.990850291866457,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Zigbee",
-            "confidence": 1.0,
-            "center_freq": 2431.81,
-            "bandwidth_px": 2,
-            "horizontal_width": 3,
-            "amplitude": 1.9072399897661079,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Zigbee",
-            "confidence": 0.94,
-            "center_freq": 2455.67,
-            "bandwidth_px": 2,
-            "horizontal_width": 3,
-            "amplitude": 1.5644191485375283,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Bluetooth",
-            "confidence": 0.94,
-            "center_freq": 2400.0,
-            "bandwidth_px": 2,
-            "horizontal_width": 1,
-            "amplitude": 56.9881490472967,
-            "duty_cycle": 0.3,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Bluetooth",
             "confidence": 0.9,
-            "center_freq": 2443.74,
-            "bandwidth_px": 3,
-            "horizontal_width": 1,
-            "amplitude": 59.233196754640396,
-            "duty_cycle": 0.3,
-            "noise_floor": 10.03048214838829
+            "center_freq": 2419.57,
+            "bandwidth_px": 51,
+            "horizontal_width": 8,
+            "amplitude": 80.82437940110158,
+            "duty_cycle": 1,
+            "noise_floor": 29.999678348068407
+        },
+        {
+            "type": "Zigbee",
+            "confidence": 0.88,
+            "center_freq": 2480.56,
+            "bandwidth_px": 35,
+            "horizontal_width": 8,
+            "amplitude": 82.76532423023787,
+            "duty_cycle": 1,
+            "noise_floor": 29.999678348068407
         },
         {
             "type": "Bluetooth",
-            "confidence": 0.93,
-            "center_freq": 2479.52,
-            "bandwidth_px": 2,
-            "horizontal_width": 1,
-            "amplitude": 67.62161638905961,
-            "duty_cycle": 0.3,
-            "noise_floor": 10.03048214838829
+            "confidence": 0.81,
+            "center_freq": 2432.94,
+            "bandwidth_px": 11,
+            "horizontal_width": 50,
+            "amplitude": 71.36332700207599,
+            "duty_cycle": 1,
+            "noise_floor": 29.999678348068407
         },
         {
             "type": "Bluetooth",
-            "confidence": 0.92,
-            "center_freq": 2427.83,
-            "bandwidth_px": 3,
-            "horizontal_width": 1,
-            "amplitude": 62.815176282592205,
-            "duty_cycle": 0.3,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Bluetooth",
-            "confidence": 0.93,
-            "center_freq": 2407.95,
-            "bandwidth_px": 3,
-            "horizontal_width": 1,
-            "amplitude": 63.831083411965004,
-            "duty_cycle": 0.3,
-            "noise_floor": 10.03048214838829
+            "confidence": 0.97,
+            "center_freq": 2445.66,
+            "bandwidth_px": 11,
+            "horizontal_width": 50,
+            "amplitude": 70.90283526393338,
+            "duty_cycle": 1,
+            "noise_floor": 29.999678348068407
         },
         {
             "type": "Cordless-phone",
-            "confidence": 0.87,
-            "center_freq": 2411.93,
-            "bandwidth_px": 5,
-            "horizontal_width": 6,
-            "amplitude": 3.4684506901789507,
+            "confidence": 0.95,
+            "center_freq": 2459.36,
+            "bandwidth_px": 52,
+            "horizontal_width": 15,
+            "amplitude": 108.41869628433315,
             "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Cordless-phone",
-            "confidence": 0.89,
-            "center_freq": 2459.64,
-            "bandwidth_px": 5,
-            "horizontal_width": 6,
-            "amplitude": 2.337372910274756,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
-        },
-        {
-            "type": "Cordless-phone",
-            "confidence": 0.94,
-            "center_freq": 2435.79,
-            "bandwidth_px": 5,
-            "horizontal_width": 6,
-            "amplitude": 3.9335645514986473,
-            "duty_cycle": 1,
-            "noise_floor": 10.03048214838829
+            "noise_floor": 29.999678348068407
         }
     ]
 }
