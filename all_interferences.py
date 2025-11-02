@@ -26,7 +26,7 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=30
         raise ValueError("Too many Wi-Fi clients for given Y range")
 
     bw_per_client = max(3, int(usable_height /n_clients))
-    print(f"client width: {bw_per_client}")
+    #print(f"client width: {bw_per_client}")
 
     # --- Generate clients ---
     for i in range(n_clients):
@@ -35,7 +35,7 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=30
         fc = int((y_start + y_end) / 2)  # center frequency index
         #print(y_start, fc, y_end)
         yy = np.arange(ny)
-        sinc_profile = np.sinc((yy - fc) /10)**2
+        sinc_profile = np.sinc((yy - fc) /25)**2
         sinc_profile /= sinc_profile.max()
 
         # --- Horizontal duplication across x-axis ---
@@ -45,7 +45,7 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=30
             amp = np.random.normal(amp_mean, np.sqrt(amp_var))
             for xi in range(x_start, x_end):
                 grid[y_start:y_end, xi] += amp * sinc_profile[y_start:y_end]
-                print(grid[y_start:y_end,xi])
+                #print(grid[y_start:y_end,xi])
             x_start += width + x_gap
 
         # --- Log the generated client ---      
@@ -57,7 +57,6 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=30
             "horizontal_width" : width,
             "amplitude": float(amp),
             "duty_cycle": 1.0,
-            "noise_floor": float(np.mean(noise_grid)),
         })
 
     return grid
@@ -65,7 +64,7 @@ def add_wifi_clients(noise_grid, grid, x, y, n_clients=1, width=30
 
 # ==================== ZIGBEE ====================
 def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=8, amp_mean=80, amp_var=10,
-                       sigma_y=10, bursty=False, duty_cycle=0.0, positions_log=None):
+                       sigma_y=15, bursty=False, duty_cycle=0.0, positions_log=None):
     grid = grid.copy().astype(float)
     nx, ny = len(x), len(y)
 
@@ -95,7 +94,6 @@ def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=8, amp_mean=80,
             "horizontal_width": width,
             "amplitude": float(amp),
             "duty_cycle":duty_cycle if bursty else 1,
-            "noise_floor": np.mean(noise_grid),
         })
 
     return grid
@@ -103,7 +101,7 @@ def add_zigbee_clients(noise_grid,grid, x, y, n_clients=5, width=8, amp_mean=80,
 
 # ==================== CORDLESS PHONE ====================
 def add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=2, width=15, gap=8,
-                               amp_mean=110, amp_var=20, sigma_y=10,
+                               amp_mean=110, amp_var=20, sigma_y=15,
                                bursty=False, duty_cycle=0.0, positions_log=None):
 
     grid = grid.copy().astype(float)
@@ -134,7 +132,6 @@ def add_cordless_phone_clients(noise_grid,grid, x, y, n_clients=2, width=15, gap
             "horizontal_width": width,
             "amplitude": float(amp),
             "duty_cycle": duty_cycle if bursty else 1,
-            "noise_floor": np.mean(noise_grid),
         })
 
     return grid
@@ -172,7 +169,6 @@ def add_bluetooth_clients(noise_grid,grid, x, y, n_clients=20, width=50, height_
             "horizontal_width": width,
             "amplitude": float(amp),
             "duty_cycle": duty_cycle ,
-            "noise_floor": np.mean(noise_grid),
         })
     return grid
 
@@ -201,7 +197,7 @@ def main():
     positions_log = []
 
     # --- Wi-Fi ---
-    print(len(y))
+    #print(len(y))
     n_wifi_clients = int(input("Enter number of Wi-Fi clients: "))
     wifi_grid = add_wifi_clients(noise_grid,noise_grid, x, y,
                                  n_clients=n_wifi_clients, width=30, x_gap=10,

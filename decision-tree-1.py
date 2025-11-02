@@ -270,7 +270,7 @@ def detect_pulses_from_grid(grid, refs=None, energy_threshold=ENERGY_THRESH, B_d
                     t_union = max(act.t_end, t) - min(act.t_start, act.t_start)
                     TOR = t_overlap / float(t_union + 1e-12)
 
-                    if FOR > 0.5 and TOR > 0.5:
+                    if FOR > 0.6 and TOR > 0.6:
                         act.extend(t, l, kp, r, pvals)
                         matched = True
                         matched_active.add(idx)
@@ -351,7 +351,7 @@ def cross_correlation(sig_ref, sig_meas):
     return float(np.max(np.abs(corr)) / len(a))
 
 # ---------------- build reference signatures (isolated) ----------------
-def build_reference_signatures(x, y, n_per_type=40):
+def build_reference_signatures(x, y, n_per_type=20):
     """
     For each device type, generate n_per_type isolated frames using add_* functions,
     detect pulses and average their normalized spectral shapes to form reference signatures.

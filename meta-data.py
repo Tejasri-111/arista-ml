@@ -35,7 +35,7 @@ def plot_noise_grid(x, y, grid, title, save_path=None):
 
 def generate_interference_frame(x,y):
 
-    noise_grid = generate_gaussian_noise_grid(x, y, mean=30, variance=5)
+    noise_grid = generate_gaussian_noise_grid(x, y, mean=10, variance=5)
     grid = noise_grid.copy()
     positions_log = []
 
@@ -66,8 +66,7 @@ def generate_interference_frame(x,y):
             "bandwidth_px": entry.get("bandwidth_px", 1),
             "horizontal_width":entry.get("horizontal_width",None),
             "amplitude": entry.get("amplitude", None),
-            "duty_cycle": entry.get("duty_cycle", None),
-            "noise_floor": entry.get("noise_floor", None),    
+            "duty_cycle": entry.get("duty_cycle", None),       
         }
         events.append(event)
 
@@ -76,6 +75,7 @@ def generate_interference_frame(x,y):
         "channel": random.choice([1, 6, 11]),
         "band": "2.4GHz",
         "airtime_cost": round(random.uniform(0.01, 0.8), 3),
+        "noise_floor": np.mean(noise_grid),
         "events": events
     }
 
@@ -110,7 +110,7 @@ def main():
     x = np.arange(0, 240, 1)
     y = np.arange(0, 256, 1)
     image_path, frame_info, grid = generate_interference_frame(x,y)
-    print(grid)
+    #print(grid)
 
     image_out_path = f"results/interference.png"
     plot_noise_grid(x,y,grid,"interference",image_path)
